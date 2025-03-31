@@ -119,23 +119,6 @@ class Profile(models.Model):
 from django.db import models
 from django.contrib.auth.models import User
 
-'''class Trade(models.Model):
-    STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('accepted', 'Accepted'),
-        ('declined', 'Declined'),
-    ]
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='trade_offers_sent')
-    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='trade_offers_received')
-    sender_listing = models.ForeignKey('Listing', on_delete=models.CASCADE, related_name='sent_trades')
-    receiver_listing = models.ForeignKey('Listing', on_delete=models.CASCADE, related_name='received_trades')
-   
-    created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=20, default='pending')  
-    chat_message = models.TextField(blank=True, null=True)  
-
-    def __str__(self):
-        return f"Trade from {self.sender} to {self.receiver} - Status: {self.status}" '''
 
 
 class Trade(models.Model):
@@ -168,7 +151,7 @@ class Notification(models.Model):
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
-    type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES, default='system')  # ✅ This line
+    type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES, default='system')  
     is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

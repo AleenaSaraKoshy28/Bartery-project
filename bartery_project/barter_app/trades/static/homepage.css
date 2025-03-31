@@ -65,10 +65,12 @@ h1, h2, h3,
 /* --- HERO --- */
 .hero-section {
   width: 100%;
-  overflow: hidden;
+  
   margin: 0;
   padding: 0;
   border-bottom: 3px dashed #000;
+ 
+  position: relative; /* Important for absolute positioning */
 }
 
 .hero-section img {
@@ -194,4 +196,28 @@ h1, h2, h3,
   margin: 0 auto 10px;
   border-radius: 50%;
   line-height: 40px;
+}
+
+
+/* Clearly positioned overlay texts */
+.overlay-text {
+  position: absolute;
+  color: #000;
+  font-family: 'Anton', sans-serif;
+  font-size: 4rem; /* Adjust size as needed */
+  text-shadow: 2px 2px #fff;
+  pointer-events: none;
+  z-index: 10; /* Ensures text sits on top of image clearly */
+}
+
+.overlay-text.top-right {
+  top: 40px; /* Increase to push text further down */
+  right: 40px; /* Adjust as needed */
+  text-align: right;
+}
+
+.overlay-text.bottom-left {
+  bottom: 40px; /* Increase to push text up */
+  left: 40px; /* Adjust as needed */
+  text-align: left;
 }
