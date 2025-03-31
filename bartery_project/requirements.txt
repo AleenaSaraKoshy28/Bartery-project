@@ -13,12 +13,14 @@ cryptography==44.0.2
 Django==5.1.7
 geographiclib==2.0
 geopy==2.4.1
+gunicorn==23.0.0
 hiredis==3.1.0
 hyperlink==21.0.0
 idna==3.10
 incremental==24.7.2
 msgpack==0.6.2
 ndg-httpsclient==0.5.1
+packaging==24.2
 pillow==11.0.0
 pusher==3.3.3
 pyasn1==0.6.1
