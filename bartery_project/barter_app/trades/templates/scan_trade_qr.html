@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scan QR to Confirm Trade</title>
+  <link rel="stylesheet" href="{% static 'scan_trade_qr.css' %}">
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+
+<body>
+  <h2>📸 Scan Trade QR Code</h2>
+
+  <div id="reader"></div>
+  <p class="status" id="scan-status">Waiting to scan...</p>
+
+  <script>
+    function handleScanSuccess(decodedText, decodedResult) {
+      document.getElementById("scan-status").textContent = "✅ Scanned. Confirming...";
+
+      fetch("{% url 'confirm_trade_qr' trade.id %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({ qr_data: decodedText })
+      })
+      .then(async response => {
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Expected JSON response");
+        }
+        return await response.json();
+      })
+      .then(data => {
+        if (data.status === "success") {
+          document.getElementById("scan-status").textContent = "🎉 Trade marked as completed!";
+        } else {
+          document.getElementById("scan-status").textContent = "❌ " + data.message;
+        }
+      })
+      .catch(err => {
+        document.getElementById("scan-status").textContent = "❌ Error: " + err.message;
+      });
+
+      html5QrcodeScanner.clear();
+    }
+
+    const html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+    html5QrcodeScanner.render(handleScanSuccess);
+  </script>
+</body>
+</html>

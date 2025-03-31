@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ listing.user.profile.business_name }}'s Profile</title>
+  <link rel="stylesheet" href="{% static 'business_social_board.css' %}">
+</head>
+
+<body>
+  <div class="social-profile">
+
+    <!-- Banner + Profile Info -->
+    <div class="profile-header">
+      <div class="profile-banner">
+        {% if listing.user.profile.profile_picture %}
+          <img src="{{ listing.user.profile.profile_picture.url }}" class="profile-picture" alt="Profile Picture">
+        {% else %}
+          <div class="profile-picture placeholder">🏢</div>
+        {% endif %}
+
+        <div class="profile-info">
+          <h2>{{ listing.user.profile.business_name }}</h2>
+          <p class="bio">{{ listing.user.profile.bio|default:"No business description yet." }}</p>
+          <p class="location">📍 {{ listing.user.profile.location|default:"Location Unknown" }}</p>
+
+          {% if listing.user.profile.skills_hiring_for %}
+            <div class="interests">
+              {% for skill in listing.user.profile.skills_hiring_for %}
+                <span class="interest-tag">{{ skill|capfirst }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="stats">
+            <span>{{ listing.user.listing_set.count }} Listings</span>
+            <span>{{ listing.user.profile.follower_count }} Followers</span>
+          </div>
+
+          {% if request.user != listing.user and not request.user.profile.is_business %}
+            {% if request.user in listing.user.profile.followers.all %}
+              <a href="{% url 'unfollow_user' listing.user.id %}" class="follow-btn following">Unfollow</a>
+            {% else %}
+              <a href="{% url 'follow_user' listing.user.id %}" class="follow-btn">Follow</a>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Business Listing Focus -->
+    <div class="listing-board">
+      <h3>Featured Listing: {{ listing.title }}</h3>
+
+      <div class="listing-card">
+        {% if listing.image %}
+          <img src="{{ listing.image.url }}" class="listing-img" alt="{{ listing.title }}">
+        {% else %}
+          <div class="listing-img placeholder">📦</div>
+        {% endif %}
+
+        <div class="listing-details">
+          <h4>{{ listing.title }}</h4>
+          <p>{{ listing.description }}</p>
+          <div class="listing-tags">
+            <span class="tag">{{ listing.category|capfirst }}</span>
+            <span class="tag">{{ listing.get_offer_tag_display }}</span>
+            <span class="tag">Looking for: {{ listing.get_tag_display }}</span>
+          </div>
+          <span class="stock">Stock: {{ listing.stock }}</span>
+        </div>
+      </div>
+    </div>
+
+    <p><a href="{% url 'business_exchanges' %}">← Back to Business Listings</a></p>
+
+  </div>
+</body>
+</html>

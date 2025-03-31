@@ -1,0 +1,32 @@
+body {
+    background: linear-gradient(to bottom right, #dff6f3, #b4e6dd);
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    padding: 40px;
+  }
+  
+  h2 {
+    font-family: 'Anton', sans-serif;
+    color: #0d4c4c;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  #reader {
+    width: 320px;
+    margin: 0 auto 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .status {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: green;
+    margin-top: 20px;
+  }
+  
+  .error {
+    color: red;
+  }
+  

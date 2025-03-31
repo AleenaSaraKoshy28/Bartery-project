@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code for Trade #{{ trade.id }}</title>
+  <link rel="stylesheet" href="{% static 'generate_qr_display.css' %}">
+</head>
+
+<body>
+  <h2>📦 Show this QR to the other party</h2>
+  <p>Once scanned, this trade will be marked as delivered from your side.</p>
+
+  <img src="data:image/png;base64,{{ qr_image }}" alt="Trade QR Code" />
+
+  <p><a href="{% url 'trade_chat' trade.id %}">← Back to Chat</a></p>
+</body>
+</html>

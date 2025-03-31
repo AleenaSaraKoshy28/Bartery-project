@@ -1,0 +1,31 @@
+<!-- templates/registration/login.html -->
+<div id="login-modal" class="modal-overlay">
+    <div class="modal-card">
+      <h2 class="modal-title">🔐 Login</h2>
+  
+      {% if form.errors %}
+        <p class="error-text">Your username and password didn't match. Please try again.</p>
+      {% endif %}
+  
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="modal-btn">Log in</button>
+      </form>
+  
+      <hr>
+  
+      <p class="modal-switch">🔓 Don't have an account?</p>
+      <ul>
+        <li><a href="#" onclick="openModal('register-modal')">Register as a regular user</a></li>
+        <li><a href="#" onclick="openModal('business-modal')">Register as a business</a></li>
+      </ul>
+  
+      <p class="modal-note">
+        Business users will be automatically redirected to the Business Dashboard after login.
+      </p>
+  
+      <button class="close-btn" onclick="closeModal('login-modal')">✖</button>
+    </div>
+  </div>
+  

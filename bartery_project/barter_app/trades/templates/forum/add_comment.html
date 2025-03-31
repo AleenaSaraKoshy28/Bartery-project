@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Comment</title>
+  <link rel="stylesheet" href="{% static 'forum.css' %}">
+</head>
+<body>
+  <div class="forum-container">
+    <h2 class="forum-title">💬 Comment on "{{ post.title }}"</h2>
+    <form method="post" class="forum-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="forum-submit">Submit</button>
+    </form>
+  </div>
+</body>
+</html>

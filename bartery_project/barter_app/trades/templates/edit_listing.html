@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Listing</title>
+  <link rel="stylesheet" href="{% static 'user_functionality.css' %}">
+</head>
+
+<body>
+  <div class="page-container">
+    <h2>Edit Listing: {{ listing.title }}</h2>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      {% if listing.image %}
+        <p><strong>Current Image:</strong></p>
+        <img src="{{ listing.image.url }}" alt="Listing Image" width="200" style="margin-bottom: 10px; border-radius: 8px;">
+      {% endif %}
+
+      {% if listing.category == 'skill' %}
+        <p class="hint"><strong>Tip:</strong> Since this is a skill, remember to fill in the experience, duration, and background fields.</p>
+      {% elif listing.category == 'item' %}
+        <p class="hint"><strong>Tip:</strong> Since this is an item, add handmade info, estimated value, usage instructions, and ownership duration.</p>
+      {% endif %}
+
+      <button type="submit">Update Listing</button>
+    </form>
+
+    <p><a href="{% url 'dashboard' %}">← Back to Dashboard</a></p>
+  </div>
+</body>
+</html>

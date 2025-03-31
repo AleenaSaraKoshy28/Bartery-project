@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ listing.title }}</title>
+  <link rel="stylesheet" href="{% static 'listing_detail.css' %}">
+</head>
+<body>
+  <div class="listing-container">
+    <div class="listing-card">
+      <h1 class="listing-title">{{ listing.title }}</h1>
+
+      {% if listing.image %}
+        <img src="{{ listing.image.url }}" alt="Listing Image" class="listing-image">
+      {% else %}
+        <p class="no-image">No image uploaded for this listing.</p>
+      {% endif %}
+
+      <div class="listing-info">
+        <p><strong>Description:</strong> {{ listing.description }}</p>
+        <p><strong>Category:</strong> {{ listing.category|capfirst }}</p>
+        <p><strong>Tag:</strong> {{ listing.tag|capfirst }}</p>
+        <p><strong>Condition:</strong> {{ listing.condition|capfirst }}</p>
+        <p><strong>Stock:</strong> 
+          {% if listing.category == "item" %}
+              {{ listing.stock }}
+          {% else %}
+              Unlimited (Skill)
+          {% endif %}
+        </p>
+        <p><strong>Posted by:</strong> 
+          <a href="{% url 'user_listings' listing.user.id %}">{{ listing.user.username }}</a>
+        </p>
+        <p><strong>Location:</strong> {{ listing.location }}</p>
+        {% if listing.distance %}
+          <p><strong>Distance:</strong> {{ listing.distance }} km</p>
+        {% endif %}
+      </div>
+
+      {% if listing.category == 'skill' %}
+        <div class="listing-section">
+          <h3>💼 Skill Information</h3>
+          <p><strong>Experience:</strong> {{ listing.skill_experience }}</p>
+          <p><strong>Duration:</strong> {{ listing.skill_duration }}</p>
+          <p><strong>Background:</strong> {{ listing.skill_background }}</p>
+        </div>
+      {% elif listing.category == 'item' %}
+        <div class="listing-section">
+          <h3>📦 Item Information</h3>
+          <p><strong>Handmade:</strong> {{ listing.is_handmade|yesno:"Yes,No" }}</p>
+          <p><strong>Estimated Value:</strong> {{ listing.estimated_value }}</p>
+          <p><strong>Usage Instructions:</strong> {{ listing.usage_instructions }}</p>
+          <p><strong>Owned For:</strong> {{ listing.ownership_duration }}</p>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="comment-section">
+      <h2>💬 Comments</h2>
+
+      <form method="post" class="comment-form">
+        {% csrf_token %}
+        <textarea name="comment" rows="3" placeholder="Add a comment..." required></textarea>
+        <input type="hidden" name="parent_id" id="parent_id">
+        <button type="submit">Post Comment</button>
+      </form>
+
+      {% for comment in comments %}
+        <div class="comment-block">
+          <p class="comment-meta"><strong>{{ comment.user.username }}</strong> • {{ comment.created_at|date:"M d, H:i" }}</p>
+          <p>{{ comment.comment }}</p>
+          <a href="javascript:void(0);" onclick="showReplyForm('{{ comment.id }}')">Reply</a>
+
+          <!-- Inline Reply Form -->
+          <div class="reply-form" id="reply-form-{{ comment.id }}" style="display: none;">
+            <form method="post">
+              {% csrf_token %}
+              <textarea name="comment" rows="2" placeholder="Write a reply..." required></textarea>
+              <input type="hidden" name="parent_id" value="{{ comment.id }}">
+              <button type="submit">Post Reply</button>
+            </form>
+          </div>
+
+          {% for reply in comment.replies.all %}
+            <div class="reply-block">
+              <p class="comment-meta"><strong>{{ reply.user.username }}</strong> • {{ reply.created_at|date:"M d, H:i" }}</p>
+              <p>{{ reply.comment }}</p>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+    function showReplyForm(commentId) {
+      document.querySelectorAll('.reply-form').forEach(f => f.style.display = 'none');
+      const form = document.getElementById(`reply-form-${commentId}`);
+      if (form) form.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

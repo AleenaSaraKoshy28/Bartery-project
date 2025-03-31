@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Business Dashboard</title>
+  <link rel="stylesheet" href="{% static 'business_dashboard.css' %}">
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Fixed Sidebar -->
+    <div class="sidebar">
+      <div class="profile-section">
+        <h1>{{ profile.business_name }}'s Business</h1>
+        <p>Bio: {{ profile.bio }}</p>
+        <p>Location: {{ profile.location }}</p>
+        <ul class="profile-links">
+          
+          <li><a href="{% url 'edit_business_profile' %}">✏️ Edit Business Profile</a></li>
+          <li><a href="{% url 'delete_business_profile' %}">🗑️ Delete Business Profile</a></li>
+
+        </ul>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Top Bar -->
+      <div class="business-top-bar">
+        <p class="catalog-link">
+          <a href="{% url 'business_exchanges' %}">🔁 Browse User Skills (Exchange Service)</a>
+        </p>
+        <p class="post-new">
+          <a href="{% url 'create_business_listing' %}">➕ Post a Position</a>
+
+        </p>
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="logout-btn">🚪 Log Out</button>
+        </form>
+      </div>
+
+      <h1 class="dashboard-title">Welcome, {{ user.username }}!</h1>
+
+      <!-- Dashboard Grid for Cards -->
+      <div class="dashboard-grid">
+        <!-- Card 1: Business Listings -->
+        <div class="section business-listings-section">
+          <h2>Your Business Listings</h2>
+          <ul class="business-listings">
+            {% for listing in listings %}
+              {% if listing.stock > 0 or listing.category == 'skill' %}
+                <li>
+                  <strong>{{ listing.title }}</strong><br>
+                  <em>{{ listing.get_category_display }}</em> — {{ listing.get_offer_tag_display }}<br>
+                  {{ listing.description }}<br>
+                  <ul>
+                    {% if listing.category == 'item' %}
+                      <li>Stock: {{ listing.stock }}</li>
+                      <li>Condition: {{ listing.get_condition_display }}</li>
+                    {% else %}
+                      <li>Skill Opportunity (Unlimited)</li>
+                    {% endif %}
+                    <li>Skill Needed: {{ listing.get_tag_display }}</li>
+                    <li>Location: {{ listing.location }}</li>
+                  </ul>
+                  <a href="{% url 'edit_business_listing' listing.id %}">✏️ Edit</a>
+                  <a href="{% url 'delete_business_listing' listing.id %}">🗑️ Delete</a>
+
+                </li>
+              {% endif %}
+            {% empty %}
+              <li>You haven't added any business listings yet.</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Card 2: Pending Trade Requests -->
+        <div class="section section-trades">
+          <h2>📨 Pending Trade Requests (You Received)</h2>
+          <ul>
+            {% for trade in pending_trades %}
+              <li>
+                <strong>{{ trade.sender.username }}</strong> proposed {{ trade.sender_listing.title }} for your listing:
+                <em>{{ trade.receiver_listing.title }}</em><br>
+                <a href="{% url 'respond_to_trade' trade.id 'accept' %}">Accept</a> |
+                <a href="{% url 'respond_to_trade' trade.id 'decline' %}">Decline</a> |
+                <a href="{% url 'negotiate_trade' trade.id %}">Negotiate</a>
+              </li>
+            {% empty %}
+              <li>No pending requests.</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Card 3: Awaiting Responses -->
+        <div class="section section-trades">
+          <h2>📤 Awaiting Responses (You Sent)</h2>
+          <ul>
+            {% for trade in awaiting_response_trades %}
+              <li>
+                You proposed {{ trade.sender_listing.title }} to {{ trade.receiver.username }} ({{ trade.receiver_listing.title }})
+                — Status: {{ trade.status }}
+              </li>
+            {% empty %}
+              <li>No outgoing requests awaiting response.</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Card 4: Accepted Trades -->
+        <div class="section section-trades">
+          <h2>🤝 Accepted Trades (Ongoing)</h2>
+          <ul>
+            {% for trade in accepted_trades %}
+              <li>
+                {{ trade.sender_listing.title }} ↔ {{ trade.receiver_listing.title }}
+                between {{ trade.sender.username }} and {{ trade.receiver.username }}<br>
+                <a href="{% url 'trade_chat' trade.id %}">💬 Open Chat</a>
+              </li>
+            {% empty %}
+              <li>No accepted trades yet.</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Card 5: Past Trades -->
+        <div class="section section-trades">
+          <h2>📜 Past Trades (Declined or Completed)</h2>
+          <ul>
+            {% for trade in past_trades %}
+              <li>
+                {{ trade.sender.username }} exchanged {{ trade.sender_listing.title }} with {{ trade.receiver.username }}
+                for {{ trade.receiver_listing.title }} — Status: {{ trade.status|capfirst }}
+              </li>
+            {% empty %}
+              <li>No past trades.</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="section completed-trades-section">
+          <h2>🎉 Completed Trades</h2>
+          {% if completed_trades %}
+            <ul>
+              {% for trade in completed_trades %}
+                <li class="dashboard-card">
+                  {{ trade.sender.username }} exchanged 
+                  <strong>{{ trade.sender_listing.title }}</strong>
+                  with {{ trade.receiver.username }} for 
+                  <strong>{{ trade.receiver_listing.title }}</strong>.<br>
+                  <strong>Status:</strong> 
+                  <span class="status-badge completed">Completed</span> 
+                  ({{ trade.updated_at|date:"M d, Y" }})
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>No completed trades yet.</p>
+          {% endif %}
+        </div>
+        
+
+        <!-- Card 6: Notifications -->
+        <div class="section notification-section">
+          <h2>Notifications</h2>
+          <ul>
+            {% for note in notifications %}
+              <li class="notification-card">
+                {{ note.message }}<br>
+                <small>{{ note.created_at|date:"M d, H:i" }}</small>
+              </li>
+            {% empty %}
+              <li>No notifications at the moment.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div> <!-- end .dashboard-grid -->
+    </div> <!-- end .main-content -->
+  </div> <!-- end .dashboard-container -->
+</body>
+</html>

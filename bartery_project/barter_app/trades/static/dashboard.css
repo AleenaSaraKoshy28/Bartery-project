@@ -1,0 +1,328 @@
+/* -------------------------------------
+   Global Fonts & Background
+------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Libre+Baskerville&display=swap');
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Libre Baskerville', serif;
+  background: linear-gradient(135deg, #a1e3d8, #c9f0e5); /* Turquoise-inspired gradient */
+  color: #222;
+  height: 100%;
+}
+
+/* -------------------------------------
+   Dashboard Container
+------------------------------------- */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* -------------------------------------
+   Fixed Sidebar (Profile Area)
+------------------------------------- */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(to bottom right, #b4e6dd, #e0f8f4);
+  border-right: 2px solid #666;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  z-index: 999;
+}
+
+.sidebar .profile-section h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.8rem;
+  color: #0d4c4c;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.profile-pic {
+  display: block;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 20px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #eee;
+}
+
+.profile-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.profile-links li {
+  margin-bottom: 8px;
+}
+
+.profile-links a {
+  display: inline-block;
+  text-decoration: none;
+  background: #62bdb3;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+  font-family: 'Anton', sans-serif;
+}
+
+.profile-links a:hover {
+  background: #4a5cd1;
+}
+
+.sidebar p {
+  margin: 10px 0;
+  line-height: 1.4;
+  font-size: 0.95rem;
+}
+
+/* -------------------------------------
+   Main Content Area
+------------------------------------- */
+.main-content {
+  margin-left: 280px; /* Same as sidebar width */
+  padding: 20px;
+  overflow-y: auto;
+  width: calc(100% - 280px);
+  box-sizing: border-box;
+}
+
+/* Top Bar in Main Content */
+.dashboard-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+.dashboard-top-bar .exchanges-section {
+  margin: 0;
+}
+
+.dashboard-top-bar form {
+  margin: 0;
+}
+
+/* Adjust top bar elements if needed */
+.dashboard-top-bar .exchanges-section a,
+.dashboard-top-bar .dashboard-logout {
+  font-size: 1rem;
+  padding: 8px 14px;
+}
+
+/* Dashboard Title */
+.dashboard-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 2rem;
+  color: #0d4c4c;
+  margin: 0 0 20px 0;
+}
+
+/* -------------------------------------
+   Dashboard Grid (for sections)
+------------------------------------- */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 20px;
+}
+
+/* Each Section Card */
+.section {
+  background: rgba(255,255,255,0.92);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  padding: 20px;
+  font-family: 'Libre Baskerville', serif;
+  position: relative;
+}
+
+/* Section Headings */
+.section h2,
+.section h3 {
+  margin-top: 0;
+  font-family: 'Anton', sans-serif;
+  color: #0d4c4c;
+  border-bottom: 2px solid #a1e3d8;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+/* -------------------------------------
+   Cards Inside Sections (Listings, Trades, etc.)
+------------------------------------- */
+.dashboard-card {
+  background: linear-gradient(to bottom right, #e0f8f4, #b4e6dd);
+  border: 2px dashed #666;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 12px;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.dashboard-card strong {
+  font-weight: 600;
+  color: #444;
+}
+
+.dashboard-card a {
+  text-decoration: none;
+  color: #0d4c4c;
+  font-family: 'Anton', sans-serif;
+}
+
+.dashboard-card a:hover {
+  color: #ff6f61;
+}
+
+/* -------------------------------------
+   Social Section, Wishlist, Trades, Notifications
+------------------------------------- */
+.social-section ul,
+.wishlist-section ul,
+.trades-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.social-section li a,
+.section p a {
+  color: #0d4c4c;
+  text-decoration: none;
+  font-family: 'Anton', sans-serif;
+}
+
+.social-section li a:hover,
+.section p a:hover {
+  text-decoration: underline;
+}
+
+.wishlist-item {
+  background: linear-gradient(to bottom right, #e0f8f4, #b4e6dd);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.trades-section form input[type="text"],
+.trades-section form select {
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin-right: 6px;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.trades-section button {
+  background: #62bdb3;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-family: 'Anton', sans-serif;
+  transition: background 0.2s ease;
+}
+
+.trades-section button:hover {
+  background: #4a5cd1;
+}
+
+.notification-card {
+  background: linear-gradient(to bottom right, #e0f8f4, #b4e6dd);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  font-family: 'Libre Baskerville', serif;
+}
+
+/* -------------------------------------
+   Logout & Global Links (Top Bar)
+------------------------------------- */
+.dashboard-logout {
+  display: inline-block;
+  background: #ff6363;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-family: 'Anton', sans-serif;
+  transition: background 0.2s ease;
+  margin: 0;
+}
+
+.dashboard-logout:hover {
+  background: #ff4a4a;
+}
+
+.section p a {
+  color: #0d4c4c;
+  text-decoration: none;
+  font-family: 'Anton', sans-serif;
+}
+
+.section p a:hover {
+  text-decoration: underline;
+}
+
+/* -------------------------------------
+   "View All Exchanges" Link (Top Bar)
+------------------------------------- */
+.exchanges-section {
+  margin: 0;
+}
+
+.exchanges-section a {
+  display: inline-block;
+  color: #0d4c4c;
+  text-decoration: none;
+  font-family: 'Anton', sans-serif;
+  font-size: 1.1rem;
+  padding: 10px 18px;
+  border: 2px solid #0d4c4c;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.exchanges-section a:hover {
+  background: #0d4c4c;
+  color: #fff;
+}
+
+.status-badge.completed {
+    background-color: #e0ffe0;
+    color: #2d7a2d;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    display: inline-block;
+  }
+  

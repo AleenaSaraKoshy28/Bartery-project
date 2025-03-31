@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ target_user.username }}'s Bartery Profile</title>
+  <link rel="stylesheet" href="{% static 'user_social_board.css' %}">
+</head>
+
+<body>
+  <div class="social-profile">
+
+    <!-- Banner + Profile Info -->
+    <div class="profile-header">
+      <div class="profile-banner">
+        {% if target_user.profile.profile_picture %}
+          <img src="{{ target_user.profile.profile_picture.url }}" class="profile-picture" alt="Profile Picture">
+        {% else %}
+          <div class="profile-picture placeholder">👤</div>
+        {% endif %}
+
+        <div class="profile-info">
+          <h2>{{ target_user.username }}</h2>
+          <p class="bio">{{ target_user.profile.bio|default:"This user hasn't added a bio yet." }}</p>
+          <p class="location">📍 {{ target_user.profile.location|default:"Location Unknown" }}</p>
+
+          {% if target_user.profile.interests %}
+            <div class="interests">
+              {% for interest in target_user.profile.interests %}
+                <span class="interest-tag">{{ interest|capfirst }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <!-- Social Stats -->
+          <div class="stats">
+            <span>{{ listings|length }} Listings</span>
+            <span>{{ target_user.profile.follower_count }} Followers</span>
+            <span>{{ target_user.profile.following.count }} Following</span>
+            <span>{{ target_user.profile.completed_trades|default:"0" }} Trades</span>
+          </div>
+
+          <!-- Follow/Unfollow -->
+          {% if request.user != target_user %}
+            {% if is_following %}
+              <a href="{% url 'unfollow_user' target_user.id %}" class="follow-btn following">Unfollow</a>
+            {% else %}
+              <a href="{% url 'follow_user' target_user.id %}" class="follow-btn">Follow</a>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Listings Grid -->
+    <div class="listing-board">
+      <h3>{{ target_user.username }}’s Listings</h3>
+
+      {% if listings %}
+        <div class="listing-grid">
+          {% for listing in listings %}
+            <div class="listing-card">
+              {% if listing.image %}
+                <img src="{{ listing.image.url }}" alt="{{ listing.title }}" class="listing-img">
+              {% else %}
+                <div class="listing-img placeholder">📦</div>
+              {% endif %}
+
+              <div class="listing-details">
+                <h4>{{ listing.title }}</h4>
+                <p>{{ listing.description|truncatewords:15 }}</p>
+                <div class="listing-tags">
+                  <span class="tag">{{ listing.category|capfirst }}</span>
+                  {% if listing.category == "item" %}
+                    <span class="stock {% if listing.stock > 0 %}in-stock{% else %}out-stock{% endif %}">
+                      {% if listing.stock > 0 %}🟢 {{ listing.stock }} Available{% else %}🔴 Out{% endif %}
+                    </span>
+                  {% else %}
+                    <span class="stock skill">♾️ Skill</span>
+                  {% endif %}
+                </div>
+                <a href="{% url 'make_trade_offer' listing.id %}" class="trade-btn">Propose Trade</a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p>This user hasn’t posted any listings yet.</p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

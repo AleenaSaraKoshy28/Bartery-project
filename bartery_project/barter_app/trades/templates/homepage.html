@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to Bartery</title>
+  <link rel="stylesheet" href="{% static 'homepage.css' %}">
+  <link rel="stylesheet" href="{% static 'modal.css' %}">
+
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Schoolbell&display=swap" rel="stylesheet">
+</head>
+<body class="homepage-body">
+
+  <!-- Header Bar -->
+  <header class="main-header">
+    <div class="logo">BARTERY</div>
+
+    <nav class="nav-links">
+      <a href="{% url 'homepage' %}">ABOUT US</a>
+      <a href="{% url 'exchanges' %}">EXCHANGES</a>
+      <a href="#">GET INVOLVED</a>
+      <a href="{% url 'forum_list' %}">FORUM</a>
+    </nav>
+
+    <div class="auth-links">
+      {% if not user.is_authenticated %}
+      <a href="#" onclick="openModal('login-modal')">LOGIN</a>
+      <a href="#" onclick="openModal('register-modal')">SIGN UP</a>
+      <a href="#" onclick="openModal('business-modal')">BUSINESS SIGN UP</a>
+      
+      {% else %}
+        {% if user.profile.is_business %}
+          <a href="{% url 'business_dashboard' %}">DASHBOARD</a>
+        {% else %}
+          <a href="{% url 'dashboard' %}">DASHBOARD</a>
+        {% endif %}
+        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+          {% csrf_token %}
+          <button class="logout-button">LOG OUT</button>
+        </form>
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- Hero Image -->
+  <div class="hero-section">
+    <img src="{% static 'images/barteryImage.jpg' %}" alt="Barter Collage Hero">
+  </div>
+
+  <section class="listings-preview">
+    <h2>Browse Barter Listings</h2>
+    <p>Discover a sample of items and skills shared by our community:</p>
+  
+    <div class="listing-grid">
+      {% for listing in listings %}
+        <div class="listing-card">
+          <h3>{{ listing.title }}</h3>
+          <p class="listing-tag">{{ listing.get_tag_display }}</p>
+          <p>{{ listing.description|truncatewords:10 }}</p>
+          <p class="listing-type">{{ listing.category|capfirst }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  
+    {% if not user.is_authenticated %}
+      <div class="cta-login">
+        <p>🔒 Want to see more listings?</p>
+        <a href="#" onclick="openModal('login-modal')" class="btn-main">Login</a>
+        <a href="#" onclick="openModal('register-modal')" class="btn-main">Sign Up as User</a>
+        <a href="#" onclick="openModal('business-modal')" class="btn-main">Sign Up as Business</a>
+
+      </div>
+    {% else %}
+      <p style="text-align:center; margin-top: 20px;">
+        <a href="{% url 'exchanges' %}" class="btn-main">View All Listings</a>
+      </p>
+    {% endif %}
+  </section>
+
+  <section class="how-it-works">
+    <h2>How Bartery Works</h2>
+  
+    <div class="steps-wrapper">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Create a Listing</h3>
+        <p>Post an item or skill you're offering. It’s easy and free!</p>
+      </div>
+  
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Browse Offers</h3>
+        <p>Discover things people are sharing near you — or skills they need!</p>
+      </div>
+  
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Propose a Trade</h3>
+        <p>Choose what you can offer in return. No money involved, just value exchange.</p>
+      </div>
+  
+      <div class="step">
+        <div class="step-number">4</div>
+        <h3>Chat & Confirm</h3>
+        <p>Discuss details in real time. Once both agree, you're ready to trade!</p>
+      </div>
+    </div>
+  </section>
+  
+<!-- Include Modals -->
+{% include 'registration/login.html' with form=login_form %}
+{% include 'registration/register.html' with form=register_form %}
+{% include 'registration/register_business.html' with form=business_form %}
+
+
+<!-- Modal Helper Script -->
+<script>
+  function openModal(id) {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+  }
+
+  // Optional: close modal when clicking outside the card
+  document.addEventListener("click", function(e) {
+    if (e.target.classList.contains("modal-overlay")) {
+      e.target.classList.remove("active");
+    }
+  });
+</script>

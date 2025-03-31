@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Business Exchange</title>
+  <link rel="stylesheet" href="{% static 'exchanges.css' %}">
+</head>
+<body>
+  <h1>Available Skills from Users in Your Country</h1>
+
+  <ul>
+    {% for listing in listings %}
+      <li class="listing-block">
+        <!-- Show listing image or default -->
+        {% if listing.image %}
+          <img src="{{ listing.image.url }}" alt="{{ listing.title }}">
+        {% else %}
+          <img src="{% static 'images/default-listing.jpg' %}" alt="Default Listing">
+        {% endif %}
+
+        <h3>{{ listing.title }}</h3>
+
+        <p class="listing-tag">{{ listing.get_tag_display }}</p>
+        <p>{{ listing.description|truncatewords:12 }}</p>
+        <a href="{% url 'listing_detail' listing.id %}">Show More</a>
+
+
+        <p class="listing-type">Skill</p>
+        <p class="extra-info"><strong>From:</strong> 
+          <a href="{% url 'user_listings' listing.user.id %}">
+            {{ listing.user.username }}
+          </a>
+        </p>
+        
+        <p class="extra-info"><strong>Distance:</strong> {{ listing.distance }} km</p>
+
+        {% if request.user.profile.is_business and listing.category == 'skill' %}
+          {% if listing.user != request.user and listing.id not in rejected_listing_ids and business_has_open_positions %}
+            <form method="get" action="{% url 'business_exchange_offer' listing.id %}">
+              <button type="submit" class="propose-btn">Exchange Service</button>
+            </form>
+          {% endif %}
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>No user skills available in your region at the moment.</li>
+    {% endfor %}
+  </ul>
+
+  <p><a href="{% url 'business_dashboard' %}">← Back to Dashboard</a></p>
+</body>
+</html>

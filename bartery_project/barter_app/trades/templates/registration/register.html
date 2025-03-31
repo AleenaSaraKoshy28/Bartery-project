@@ -1,0 +1,45 @@
+<!-- templates/registration/register.html -->
+<div id="register-modal" class="modal-overlay">
+    <div class="modal-card">
+      <h2 class="modal-title">👤 Register</h2>
+  
+      <form method="post" enctype="multipart/form-data" action="{% url 'register' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+  
+        <input id="autocomplete" type="text" name="location" placeholder="Enter your location">
+        <input type="hidden" id="autocomplete-latitude" name="latitude">
+        <input type="hidden" id="autocomplete-longitude" name="longitude">
+  
+        <button type="submit" class="modal-btn">Register</button>
+      </form>
+  
+      <p class="modal-switch">
+        Already have an account? <a href="#" onclick="openModal('login-modal')">Log in</a>
+      </p>
+  
+      <button class="close-btn" onclick="closeModal('register-modal')">✖</button>
+    </div>
+  </div>
+  
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1XzKBXkY9ett5wSIZA2wIZ9sCaelOm_w&libraries=places"></script>
+  <script>
+    function initAutocomplete(inputId) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        const autocomplete = new google.maps.places.Autocomplete(input, { types: ['geocode'] });
+        autocomplete.addListener('place_changed', () => {
+          const place = autocomplete.getPlace();
+          if (place.geometry) {
+            document.getElementById(`${inputId}-latitude`).value = place.geometry.location.lat();
+            document.getElementById(`${inputId}-longitude`).value = place.geometry.location.lng();
+          }
+        });
+      }
+    }
+  
+    document.addEventListener("DOMContentLoaded", function () {
+      initAutocomplete('autocomplete');
+    });
+  </script>
+  

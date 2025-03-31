@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Libre+Baskerville&display=swap');
+
+/* -----------------------------
+   Base & Page Layout
+------------------------------ */
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #d9f4ef, #b2e4db);
+  font-family: 'Libre Baskerville', serif;
+  color: #222;
+}
+
+.trade-container {
+  max-width: 750px;
+  margin: 80px auto;
+  background: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* -----------------------------
+   Headings
+------------------------------ */
+h1, h2 {
+  font-family: 'Anton', sans-serif;
+  color: #0d4c4c;
+  margin-bottom: 24px;
+}
+
+h3 {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* -----------------------------
+   Listing Preview Section
+------------------------------ */
+.listing-preview {
+  background: #eefaf7;
+  border-left: 5px solid #62bdb3;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.listing-preview p {
+  margin: 6px 0;
+}
+
+/* -----------------------------
+   Trade Form
+------------------------------ */
+.trade-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.trade-form label {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.trade-form select {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.trade-form button {
+  background-color: #0d4c4c;
+  color: white;
+  font-family: 'Anton', sans-serif;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.trade-form button:hover {
+  background-color: #62bdb3;
+}
+
+/* -----------------------------
+   Back Link
+------------------------------ */
+a {
+  display: inline-block;
+  margin-top: 30px;
+  text-decoration: underline;
+  font-weight: bold;
+  color: #0d4c4c;
+}

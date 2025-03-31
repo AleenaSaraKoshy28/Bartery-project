@@ -1,0 +1,334 @@
+/* -------------------------------------
+   Global Fonts & Background
+------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Libre+Baskerville&display=swap');
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Libre Baskerville', serif;
+  background: linear-gradient(135deg, #a1e3d8, #c9f0e5); /* Turquoise-inspired gradient */
+  color: #222;
+  height: 100%;
+}
+
+/* -------------------------------------
+   Dashboard Container
+------------------------------------- */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* -------------------------------------
+   Fixed Sidebar (Profile Area)
+------------------------------------- */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(to bottom right, #b4e6dd, #e0f8f4);
+  border-right: 2px solid #666;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  z-index: 999;
+}
+
+.sidebar .profile-section h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.8rem;
+  color: #0d4c4c;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.profile-section p,
+.profile-section .profile-links {
+  margin-bottom: 15px;
+}
+
+.profile-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.profile-links li {
+  margin-bottom: 8px;
+}
+
+.profile-links a {
+  display: inline-block;
+  text-decoration: none;
+  background: #62bdb3;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+  font-family: 'Anton', sans-serif;
+}
+
+.profile-links a:hover {
+  background: #4a5cd1;
+}
+
+.sidebar p {
+  margin: 10px 0;
+  line-height: 1.4;
+  font-size: 0.95rem;
+}
+
+/* -------------------------------------
+   Main Content Area
+------------------------------------- */
+.main-content {
+  margin-left: 280px; /* same as sidebar width */
+  padding: 20px;
+  overflow-y: auto;
+  width: calc(100% - 280px);
+  box-sizing: border-box;
+}
+
+/* Top Bar for Business Dashboard */
+.business-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+.business-top-bar .post-new a,
+.business-top-bar .logout-btn,
+.business-top-bar .catalog-link a {
+  font-family: 'Anton', sans-serif;
+  font-size: 1rem;
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Catalog Link in Top Bar */
+.business-top-bar .catalog-link a {
+  color: #0d4c4c;
+  border: 2px solid #0d4c4c;
+  margin-right: 10px;
+}
+.business-top-bar .catalog-link a:hover {
+  background: #0d4c4c;
+  color: #fff;
+}
+
+/* Logout Button in Top Bar */
+.business-top-bar .logout-btn {
+  background: #ff6363;
+  color: #fff;
+  border: none;
+}
+.business-top-bar .logout-btn:hover {
+  background: #ff4a4a;
+}
+
+/* Dashboard Title */
+.dashboard-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 2rem;
+  color: #0d4c4c;
+  margin: 0 0 20px 0;
+}
+
+/* -------------------------------------
+   Dashboard Grid (for sections)
+------------------------------------- */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 20px;
+}
+
+/* Each Section Card */
+.section {
+  background: rgba(255,255,255,0.92);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  padding: 20px;
+  font-family: 'Libre Baskerville', serif;
+  position: relative;
+}
+
+/* Section Headings */
+.section h2,
+.section h3 {
+  margin-top: 0;
+  font-family: 'Anton', sans-serif;
+  color: #0d4c4c;
+  border-bottom: 2px solid #a1e3d8;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+/* -------------------------------------
+   Business Listings Styles
+------------------------------------- */
+.business-listings {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.business-listings li {
+  background: linear-gradient(to bottom right, #e0f8f4, #b4e6dd);
+  border: 2px dashed #666;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.business-listings li strong {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.2rem;
+  color: #0d4c4c;
+}
+
+.business-listings li em {
+  font-style: italic;
+  color: #0d4c4c;
+}
+
+.business-listings li ul {
+  list-style: none;
+  padding-left: 15px;
+  margin: 10px 0;
+}
+
+.business-listings li ul li {
+  margin-bottom: 5px;
+  font-size: 0.95rem;
+}
+
+.business-listings li a {
+  text-decoration: none;
+  color: #0d4c4c;
+  font-family: 'Anton', sans-serif;
+  margin-right: 10px;
+  transition: color 0.2s ease;
+}
+
+.business-listings li a:hover {
+  color: #ff6f61;
+}
+
+/* -------------------------------------
+   Section-Trades Styles
+------------------------------------- */
+.section-trades ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.section-trades li {
+  background: linear-gradient(to bottom right, #e0f8f4, #b4e6dd);
+  border: 2px dashed #666;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  font-family: 'Libre Baskerville', serif;
+}
+
+.section-trades li a {
+  text-decoration: none;
+  color: #0d4c4c;
+  font-family: 'Anton', sans-serif;
+  margin-right: 10px;
+  transition: color 0.2s ease;
+}
+
+.section-trades li a:hover {
+  color: #ff6f61;
+}
+
+/* -------------------------------------
+   Notification Section
+------------------------------------- */
+.notification-section {
+  margin-bottom: 30px;
+}
+
+.notification-section h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.8rem;
+  color: #0d4c4c;
+  border-bottom: 2px solid #a1e3d8;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+.notification-card {
+  background: linear-gradient(to bottom right, #e0f8f4, #b4e6dd);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  font-family: 'Libre Baskerville', serif;
+}
+
+/* -------------------------------------
+   Catalog Link
+------------------------------------- */
+.catalog-link h2 {
+  margin-top: 0;
+}
+
+.catalog-link a {
+  font-weight: bold;
+  text-decoration: none;
+  color: #0d4c4c;
+  font-family: 'Anton', sans-serif;
+  transition: color 0.2s ease;
+}
+
+.catalog-link a:hover {
+  color: #ff6f61;
+}
+
+/* -------------------------------------
+   Logout Button
+------------------------------------- */
+.logout-btn {
+  display: inline-block;
+  background-color: #e11d48;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  font-family: 'Anton', sans-serif;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-top: 20px;
+}
+
+.logout-btn:hover {
+  background-color: #c00;
+}
+
+.status-badge.completed {
+  background-color: #e0ffe0;
+  color: #2d7a2d;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  display: inline-block;
+  border: 1px solid #2d7a2d;
+}

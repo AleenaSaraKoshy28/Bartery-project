@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Community Forum</title>
+  <link rel="stylesheet" href="{% static 'forum.css' %}">
+</head>
+<body>
+  <div class="forum-container">
+    <h1 class="forum-title">🗣️ Community Forum</h1>
+    <div class="forum-header">
+      <a href="{% url 'create_post' %}" class="forum-new-btn">➕ New Post</a>
+    </div>
+
+    <ul class="forum-post-list">
+      {% for post in posts %}
+      <li class="forum-post-card category-{{ post.category }}">
+
+          <h2 class="post-title">{{ post.title }}</h2>
+          <p class="post-meta">
+            {{ post.get_category_display }} • by {{ post.user.username }}
+          </p>
+          <p class="post-body-preview">{{ post.body|truncatechars:100 }}</p>
+          <a href="{% url 'forum_detail' post.id %}" class="forum-view-btn">💬 View Post</a>
+        </li>
+      {% empty %}
+        <li class="no-posts">No forum posts yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</body>
+</html>

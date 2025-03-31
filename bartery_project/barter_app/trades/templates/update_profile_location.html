@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Location</title>
+</head>
+<body>
+    <h1>Update Your Location</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Location</button>
+    </form>
+
+    <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+</body>
+</html>

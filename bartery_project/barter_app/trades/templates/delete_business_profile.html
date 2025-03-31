@@ -1,0 +1,23 @@
+ <!-- delete_business_profile.html -->
+ {% load static %}
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <title>Delete Business Profile</title>
+   <link rel="stylesheet" href="{% static 'business_functionality.css' %}">
+ </head>
+ <body>
+   <div class="page-container danger">
+     <h2>⚠️ Confirm Deletion</h2>
+     <p class="danger-text">Are you sure you want to delete your business account? This action is permanent.</p>
+ 
+     <form method="post">
+       {% csrf_token %}
+       <button type="submit" class="danger">Yes, Delete My Account</button>
+       <a href="{% url 'business_dashboard' %}">Cancel</a>
+     </form>
+   </div>
+ </body>
+ </html>
+ 

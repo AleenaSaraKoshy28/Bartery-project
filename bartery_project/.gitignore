@@ -1,0 +1,18 @@
+# 💻 Python + Django
+*.pyc
+__pycache__/
+*.sqlite3
+
+# ⚙️ Environment
+env/
+*.env
+
+
+# 🔧 Editors
+.vscode/
+.idea/
+
+# 🧪 Test outputs
+.coverage
+*.log
+

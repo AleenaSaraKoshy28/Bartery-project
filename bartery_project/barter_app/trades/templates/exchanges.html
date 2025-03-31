@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exchanges</title>
+    <link rel="stylesheet" href="{% static 'exchanges.css' %}">
+</head>
+<body>
+<h1>Available Listings for Exchange</h1>
+
+<!-- Toggle View -->
+<p>Toggle View:</p>
+<a href="{% url 'exchanges' %}?view=user{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.condition %}&condition={{ request.GET.condition }}{% endif %}{% if request.GET.tag %}&tag={{ request.GET.tag }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}"
+   {% if request.GET.view != 'business' %}style="font-weight:bold;"{% endif %}>🧑 User Listings</a> |
+
+<a href="{% url 'exchanges' %}?view=business{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.condition %}&condition={{ request.GET.condition }}{% endif %}{% if request.GET.tag %}&tag={{ request.GET.tag }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}"
+   {% if request.GET.view == 'business' %}style="font-weight:bold;"{% endif %}>🏢 Business Listings</a>
+
+<!-- Filter -->
+<p>Filter by:
+    <a href="?view={{ request.GET.view }}">All</a> |
+    <a href="?view={{ request.GET.view }}&category=item">Items</a> |
+    <a href="?view={{ request.GET.view }}&category=skill">Skills</a>
+</p>
+
+{% if tag_choices %}
+<form method="get" style="margin-bottom: 15px;">
+    <input type="hidden" name="view" value="{{ request.GET.view }}">
+    {% if request.GET.category %}
+        <input type="hidden" name="category" value="{{ request.GET.category }}">
+    {% endif %}
+    <label for="tag">Filter by Tag:</label>
+    <select name="tag" onchange="this.form.submit()">
+        <option value="">All</option>
+        {% for key, value in tag_choices %}
+            <option value="{{ key }}" {% if selected_tag == key %}selected{% endif %}>{{ value }}</option>
+        {% endfor %}
+    </select>
+</form>
+{% endif %}
+
+<p>Filter by Condition:
+    <a href="?view={{ request.GET.view }}">All</a> |
+    <a href="?view={{ request.GET.view }}&condition=new">New</a> |
+    <a href="?view={{ request.GET.view }}&condition=used">Used</a> |
+    <a href="?view={{ request.GET.view }}&condition=damaged">Damaged</a>
+</p>
+
+<!-- Sort -->
+{% if user.is_authenticated %}
+<form method="get" style="margin-bottom: 1em;">
+    <input type="hidden" name="view" value="{{ request.GET.view }}">
+    {% if request.GET.category %}
+        <input type="hidden" name="category" value="{{ request.GET.category }}">
+    {% endif %}
+    {% if request.GET.condition %}
+        <input type="hidden" name="condition" value="{{ request.GET.condition }}">
+    {% endif %}
+    {% if request.GET.tag %}
+        <input type="hidden" name="tag" value="{{ request.GET.tag }}">
+    {% endif %}
+    <label for="sort">Sort by:</label>
+    <select name="sort" id="sort" onchange="this.form.submit()">
+        <option value="">-- Select --</option>
+        <option value="distance_asc" {% if request.GET.sort == 'distance_asc' %}selected{% endif %}>Distance (Nearest First)</option>
+        <option value="distance_desc" {% if request.GET.sort == 'distance_desc' %}selected{% endif %}>Distance (Farthest First)</option>
+    </select>
+</form>
+{% endif %}
+
+{% if not user.is_authenticated %}
+    <p style="color: gray;">
+        <a href="{% url 'login' %}" style="text-decoration: underline; color: blue;">Login</a> to propose a trade.
+    </p>
+{% endif %}
+
+<!-- Listings -->
+<ul>
+{% for listing in listings %}
+    <li class="listing-block">
+        {% if listing.image %}
+            <img src="{{ listing.image.url }}" alt="{{ listing.title }}">
+        {% else %}
+            <img src="{% static 'images/default-listing.jpg' %}" alt="Default Listing">
+        {% endif %}
+
+        <h3>{{ listing.title }}</h3>
+
+        {% if listing.category == 'item' %}
+            <p><strong>Condition:</strong>
+                {% if listing.condition == 'new' %}
+                    <span class="listing-condition condition-new">{{ listing.get_condition_display }}</span>
+                {% elif listing.condition == 'used' %}
+                    <span class="listing-condition condition-used">{{ listing.get_condition_display }}</span>
+                {% elif listing.condition == 'damaged' %}
+                    <span class="listing-condition condition-damaged">{{ listing.get_condition_display }}</span>
+                {% else %}
+                    <span class="listing-condition condition-unknown">Condition not specified</span>
+                {% endif %}
+            </p>
+        {% endif %}
+
+        <p><span class="listing-type">{{ listing.category|capfirst }}</span></p>
+        {% if listing.tag %}
+            <p><span class="listing-tag">{{ listing.get_tag_display }}</span></p>
+        {% endif %}
+
+        <p>{{ listing.description|truncatewords:10 }}</p>
+
+        {% if request.GET.view == 'business' and listing.is_business_listing %}
+            <a href="{% url 'business_single_listing' listing.id %}">Show More</a>
+        {% else %}
+            <a href="{% url 'listing_detail' listing.id %}">Show More</a>
+        {% endif %}
+
+        <p class="extra-info"><strong>Location:</strong> {{ listing.location }}</p>
+
+        {% if user.is_authenticated %}
+            <p class="extra-info"><strong>User:</strong> 
+                <a href="{% url 'user_listings' listing.user.id %}">{{ listing.user.username }}</a>
+            </p>
+
+            {% if listing.user == user %}
+                <p><strong style="color: green;">This is your listing.</strong></p>
+            {% else %}
+                <p class="extra-info"><strong>Distance:</strong>
+                    {% if listing.distance %}
+                        {{ listing.distance }} km
+                    {% else %}
+                        Distance not available
+                    {% endif %}
+                </p>
+
+                {% if listing.stock > 0 %}
+                    {% if not listing.has_pending_trade %}
+                        <a href="{% url 'make_trade_offer' listing.id %}" class="propose-btn">Propose Trade</a>
+                    {% else %}
+                        <p style="color: red;"><strong>Trade already proposed.</strong></p>
+                    {% endif %}
+                {% else %}
+                    <p style="color: gray;"><strong>Out of stock.</strong></p>
+                {% endif %}
+
+                {% if listing.id in wishlist_listing_ids %}
+                    <a href="{% url 'toggle_wishlist' listing.id %}" title="Remove from Wishlist" style="font-size: 1.9rem;">❤️</a>
+                {% else %}
+                    <a href="{% url 'toggle_wishlist' listing.id %}" title="Add to Wishlist" style="font-size: 1.9rem;">🤍</a>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            <p class="extra-info"><strong>Distance:</strong>
+                {% if listing.distance %}
+                    {{ listing.distance }} km
+                {% endif %}
+            </p>
+        {% endif %}
+    </li>
+{% empty %}
+    <p>No listings available at the moment.</p>
+{% endfor %}
+</ul>
+
+<p><a href="{% url 'homepage' %}">Back to Homepage</a></p>
+</body>
+</html>

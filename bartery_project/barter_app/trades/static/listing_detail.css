@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Libre+Baskerville&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #a1e3d8, #c9f0e5);
+  font-family: 'Libre Baskerville', serif;
+  color: #222;
+}
+
+.listing-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.listing-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 2rem;
+  color: #0d4c4c;
+  margin-bottom: 20px;
+}
+
+.listing-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.listing-info p {
+  margin-bottom: 10px;
+}
+
+.listing-section {
+  margin-top: 30px;
+  background: #e0f8f4;
+  padding: 16px;
+  border-radius: 10px;
+  border-left: 4px solid #62bdb3;
+}
+
+.comment-section {
+  margin-top: 50px;
+}
+
+.comment-section h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.5rem;
+  color: #0d4c4c;
+  margin-bottom: 20px;
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+
+.comment-form button {
+  background: #0d4c4c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-family: 'Anton', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.comment-form button:hover {
+  background: #62bdb3;
+}
+
+.comment-block {
+  margin-top: 20px;
+  padding: 12px;
+  border-left: 2px solid #ccc;
+  background: #f8fdfb;
+  border-radius: 8px;
+}
+
+.comment-meta {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 5px;
+  font-family: 'Anton', sans-serif;
+}
+
+.reply-form {
+  margin-top: 10px;
+  padding-left: 10px;
+}
+
+.reply-block {
+  margin-left: 20px;
+  margin-top: 10px;
+  border-left: 2px dotted #aaa;
+  padding-left: 10px;
+  background: #ffffff;
+  border-radius: 8px;
+}

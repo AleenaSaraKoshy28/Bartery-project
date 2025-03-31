@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ post.title }}</title>
+  <link rel="stylesheet" href="{% static 'forum.css' %}">
+</head>
+<body>
+  <div class="forum-container">
+    <div class="forum-post-card">
+      <h2 class="post-title">{{ post.title }}</h2>
+      <p class="post-meta">{{ post.get_category_display }} • by {{ post.user.username }} on {{ post.created_at }}</p>
+      <p class="post-body-full">{{ post.body }}</p>
+    </div>
+
+    <hr>
+
+    <div class="forum-comments">
+      <h3>💬 Comments</h3>
+      <ul class="comment-list">
+        {% for comment in comments %}
+          <li class="comment-card">
+            <strong>{{ comment.user.username }}</strong>: {{ comment.comment }}
+          </li>
+        {% empty %}
+          <li class="no-comments">No comments yet.</li>
+        {% endfor %}
+      </ul>
+      <a href="{% url 'add_comment' post.id %}" class="comment-btn">➕ Add a Comment</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Libre+Baskerville&display=swap');
+
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.2);
+  position: relative;
+  font-family: 'Libre Baskerville', serif;
+  max-height: 90vh;            /* Limits modal height to screen size */
+  overflow-y: auto;            /* Allows scrolling within modal */
+}
+
+.modal-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.6rem;
+  color: #0d4c4c;
+  margin-bottom: 20px;
+}
+
+.modal-btn {
+  background: #0d4c4c;
+  color: white;
+  font-family: 'Anton', sans-serif;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.modal-btn:hover {
+  background: #62bdb3;
+}
+
+.modal-switch {
+  margin-top: 20px;
+  font-size: 0.95rem;
+}
+
+.modal-note {
+  font-style: italic;
+  color: gray;
+  margin-top: 10px;
+}
+
+.error-text {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #555;
+}
+
+.modal-card form input,
+.modal-card form textarea,
+.modal-card form select {
+  display: block;
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.modal-card form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  .modal-card form ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+  }
+  
+  .modal-card form ul li {
+    margin-bottom: 6px;
+  }
+
+  .modal-card button {
+    margin-top: 12px;
+  }
+  

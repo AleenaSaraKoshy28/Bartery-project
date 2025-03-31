@@ -1,0 +1,10 @@
+<h2>Notifications</h2>
+<ul>
+    {% for notification in notifications %}
+        <li>
+            {{ notification.message }} - <em>{{ notification.created_at|date:"M d, Y H:i" }}</em>
+        </li>
+    {% empty %}
+        <li>No new notifications.</li>
+    {% endfor %}
+</ul>

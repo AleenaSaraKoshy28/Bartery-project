@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ listing.title }}</title>
+  <link rel="stylesheet" href="{% static 'business_single_listing.css' %}">
+</head>
+
+<body>
+  <div class="business-listing-container">
+    <h1 class="listing-title">{{ listing.title }}</h1>
+
+    {% if listing.image %}
+      <img src="{{ listing.image.url }}" alt="{{ listing.title }}" class="listing-img">
+    {% else %}
+      <div class="listing-img placeholder">📦 No Image Provided</div>
+    {% endif %}
+
+    <div class="listing-info">
+      <p><strong>Description:</strong> {{ listing.description }}</p>
+      <p><strong>Category:</strong> {{ listing.category|capfirst }}</p>
+      <p><strong>Tag:</strong> {{ listing.get_tag_display }}</p>
+      <p><strong>Condition:</strong> {{ listing.condition|capfirst }}</p>
+
+      <p><strong>Stock:</strong>
+        {% if listing.category == "item" %}
+          {{ listing.stock }}
+        {% else %}
+          Unlimited (Skill)
+        {% endif %}
+      </p>
+
+      <p><strong>Posted by:</strong> 
+        {% if listing.user.profile.business_name %}
+          {{ listing.user.profile.business_name }}
+        {% else %}
+          {{ listing.user.username }}
+        {% endif %}
+      </p>
+
+      <p><strong>Location:</strong> {{ listing.location }}</p>
+    </div>
+
+    {% if listing.category == 'skill' %}
+      <div class="skill-section">
+        <h3>💼 Skill Information</h3>
+        <p><strong>Experience:</strong> {{ listing.skill_experience }}</p>
+        <p><strong>Duration:</strong> {{ listing.skill_duration }}</p>
+        <p><strong>Background:</strong> {{ listing.skill_background }}</p>
+      </div>
+      {% endif %}
+
+    
+    {% if listing.category == 'item' and not listing.is_business_listing %}
+    <div class="item-section">
+      <h3>📦 Item Information</h3>
+      <p><strong>Handmade:</strong> {{ listing.is_handmade|yesno:"Yes,No" }}</p>
+      <p><strong>Estimated Value:</strong> {{ listing.estimated_value|default:"Not specified" }}</p>
+      <p><strong>Usage Instructions:</strong> {{ listing.usage_instructions|default:"Not provided" }}</p>
+      <p><strong>Ownership Duration:</strong> {{ listing.ownership_duration|default:"Not specified" }}</p>
+    </div>
+  {% endif %}
+  
+
+    {% if user.is_authenticated and user.profile.is_business %}
+      {% if user != listing.user %}
+        <a href="{% url 'business_exchange_offer' listing.id %}" class="exchange-btn">Exchange Service</a>
+      {% endif %}
+    {% endif %}
+
+    <p><a href="{% url 'business_exchanges' %}" class="back-link">← Back to Business Listings</a></p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trade Chat</title>
+  <link rel="stylesheet" href="{% static 'chat.css' %}">
+  <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-card">
+      <h2 class="chat-title">💬 Chat for Trade #{{ trade.id }}</h2>
+
+      <div id="chat-box" class="chat-box">
+        {% for msg in messages %}
+          <div class="chat-message {% if msg.sender == request.user %}me{% else %}them{% endif %}">
+            <div class="chat-meta">
+              <strong>{{ msg.sender.username }}</strong>
+              <span>{{ msg.timestamp|date:"M d, H:i" }}</span>
+            </div>
+            <p>{{ msg.message }}</p>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="chat-input-row">
+        <input type="text" id="message-input" placeholder="Type a message..." />
+        <button onclick="sendMessage()">Send</button>
+         <!-- 🔗 Show QR Code -->
+  <a href="{% url 'generate_trade_qr' trade.id %}" class="qr-btn">📷 Show QR</a>
+
+  <!-- 🔗 Optional: Add Scan QR button too -->
+  <a href="{% url 'scan_trade_qr' trade.id %}" class="qr-scan-btn">📸 Scan QR</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var pusher = new Pusher('{{ pusher_key }}', {
+      cluster: '{{ pusher_cluster }}',
+      forceTLS: true
+    });
+
+    var channel = pusher.subscribe('trade-chat-{{ trade.id }}');
+    channel.bind('new-message', function(data) {
+      const box = document.getElementById('chat-box');
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-message';
+      bubble.innerHTML = `
+        <div class="chat-meta"><strong>${data.username}</strong> <span>${data.timestamp}</span></div>
+        <p>${data.message}</p>`;
+      box.appendChild(bubble);
+      box.scrollTop = box.scrollHeight;
+    });
+
+    function sendMessage() {
+      const input = document.getElementById('message-input');
+      const message = input.value;
+      fetch("{% url 'send_chat_message' trade.id %}", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ message: message })
+      });
+      input.value = '';
+    }
+  </script>
+</body>
+</html>

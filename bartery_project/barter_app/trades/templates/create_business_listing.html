@@ -1,0 +1,96 @@
+ <!-- create_business_listing.html -->
+ {% load static %}
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <title>Create Business Listing</title>
+   <link rel="stylesheet" href="{% static 'business_functionality.css' %}">
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1XzKBXkY9ett5wSIZA2wIZ9sCaelOm_w&libraries=places"></script>
+ </head>
+ 
+ <body>
+   <div class="page-container">
+     <h2>Create a New Business Skill Listing</h2>
+ 
+     {% if messages %}
+       <ul>
+         {% for msg in messages %}
+           <li style="color:red;">{{ msg }}</li>
+         {% endfor %}
+       </ul>
+     {% endif %}
+ 
+     <form method="post" enctype="multipart/form-data">
+       {% csrf_token %}
+       {{ form.as_p }}
+ 
+       <label for="listing-autocomplete">Location</label>
+       <input id="listing-autocomplete" type="text" name="location" placeholder="Enter the job location">
+       <input type="hidden" id="listing-autocomplete-latitude" name="latitude">
+       <input type="hidden" id="listing-autocomplete-longitude" name="longitude">
+ 
+       <button type="submit">Post Position</button>
+     </form>
+ 
+     <a href="{% url 'business_dashboard' %}">← Back to Dashboard</a>
+   </div>
+ 
+   {{ item_tags|json_script:"itemTags" }}
+   {{ skill_tags|json_script:"skillTags" }}
+ 
+   <!-- JavaScript remains as-is -->
+   <script>
+    function initAutocomplete(inputId) {
+        const input = document.getElementById(inputId);
+        if (input) {
+            const autocomplete = new google.maps.places.Autocomplete(input, { types: ['geocode'] });
+            autocomplete.addListener('place_changed', function() {
+                const place = autocomplete.getPlace();
+                if (place.geometry) {
+                    document.getElementById(`${inputId}-latitude`).value = place.geometry.location.lat();
+                    document.getElementById(`${inputId}-longitude`).value = place.geometry.location.lng();
+                }
+            });
+        }
+    }
+
+    // Tag logic
+    let itemTags = JSON.parse(document.getElementById('itemTags').textContent);
+    let skillTags = JSON.parse(document.getElementById('skillTags').textContent);
+
+    function updateOfferTagOptions(category) {
+        const offerTagSelect = document.getElementById('id_offer_tag');
+        let options = [];
+
+        if (category === 'item') {
+            options = itemTags;
+        } else if (category === 'skill') {
+            options = skillTags;
+        }
+
+        offerTagSelect.innerHTML = '<option value="">Select a tag</option>';
+        options.forEach(function(tag) {
+            const option = document.createElement('option');
+            option.value = tag[0];
+            option.textContent = tag[1];
+            offerTagSelect.appendChild(option);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        initAutocomplete('listing-autocomplete');
+
+        const categorySelect = document.getElementById('id_category');
+        if (categorySelect) {
+            updateOfferTagOptions(categorySelect.value);
+            categorySelect.addEventListener('change', function() {
+                updateOfferTagOptions(this.value);
+            });
+        }
+    });
+</script>
+ </body>
+ </html>
+ 
+

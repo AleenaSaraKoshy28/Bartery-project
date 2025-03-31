@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Propose Trade</title>
+  <link rel="stylesheet" href="{% static 'trade_offer.css' %}">
+</head>
+
+<body>
+  <div class="trade-container">
+    <h2>Propose a Trade</h2>
+
+    <div class="listing-preview">
+      <h3>{{ receiver_listing.title }}</h3>
+      <p><strong>Category:</strong> {{ receiver_listing.category|capfirst }}</p>
+      <p><strong>Description:</strong> {{ receiver_listing.description|truncatewords:15 }}</p>
+    </div>
+
+    <form method="post" class="trade-form">
+      {% csrf_token %}
+      <label for="sender_listing">Select what you're offering in return:</label>
+      <select name="sender_listing" id="sender_listing" required>
+        {% for listing in user_listings %}
+          <option value="{{ listing.id }}">{{ listing.title }} — {{ listing.category|capfirst }}</option>
+        {% empty %}
+          <option disabled>No listings available. Add one first!</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit">Send Trade Offer</button>
+    </form>
+
+    <p><a href="{% url 'exchanges' %}">← Back to Exchanges</a></p>
+  </div>
+</body>
+</html>

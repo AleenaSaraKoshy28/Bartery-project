@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Propose Exchange</title>
+  <link rel="stylesheet" href="{% static 'business_trade_offer.css' %}">
+</head>
+
+<body>
+  <div class="trade-container">
+    <h2>Propose Exchange</h2>
+
+    <div class="listing-preview">
+      <h3>{{ target_listing.title }}</h3>
+      <p><strong>User:</strong> {{ target_listing.user.username }}</p>
+      <p><strong>Category:</strong> {{ target_listing.category|capfirst }}</p>
+      <p><strong>Description:</strong> {{ target_listing.description|truncatewords:20 }}</p>
+    </div>
+
+    <form method="post" class="trade-form">
+      {% csrf_token %}
+      <label for="offer_listing">Select a service (your listing) to offer:</label>
+      <select name="offer_listing" id="offer_listing" required>
+        {% for offer in business_inventory %}
+          <option value="{{ offer.id }}">{{ offer.title }} — {{ offer.category }} (Stock: {{ offer.stock }})</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit">Send Exchange Request</button>
+    </form>
+
+    <p><a href="{% url 'business_exchanges' %}">← Back to Browse Skills</a></p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Profile</title>
+  <link rel="stylesheet" href="{% static 'user_functionality.css' %}">
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1XzKBXkY9ett5wSIZA2wIZ9sCaelOm_w&libraries=places"></script>
+</head>
+
+<body>
+  <div class="page-container">
+    <h2>Edit Your Profile</h2>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <label for="edit-autocomplete">Location</label>
+      <input 
+        id="edit-autocomplete" 
+        type="text" 
+        name="location" 
+        placeholder="Enter your location" 
+        value="{{ request.user.profile.location }}"
+      >
+      <input type="hidden" id="edit-autocomplete-latitude" name="latitude" value="{{ request.user.profile.latitude }}">
+      <input type="hidden" id="edit-autocomplete-longitude" name="longitude" value="{{ request.user.profile.longitude }}">
+
+      <button type="submit">Save Changes</button>
+    </form>
+
+    <p><a href="{% url 'dashboard' %}">← Back to Dashboard</a></p>
+  </div>
+
+  <script>
+    function initAutocomplete(inputId) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        const autocomplete = new google.maps.places.Autocomplete(input, { types: ['geocode'] });
+        autocomplete.addListener('place_changed', () => {
+          const place = autocomplete.getPlace();
+          if (place.geometry) {
+            document.getElementById(`${inputId}-latitude`).value = place.geometry.location.lat();
+            document.getElementById(`${inputId}-longitude`).value = place.geometry.location.lng();
+          }
+        });
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      initAutocomplete('edit-autocomplete');
+    });
+  </script>
+</body>
+</html>

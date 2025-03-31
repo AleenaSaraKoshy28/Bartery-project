@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Libre+Baskerville&display=swap');
+
+body {
+  font-family: 'Libre Baskerville', serif;
+  background-color: #c9f0e5;
+  margin: 0;
+  padding: 30px;
+  color: #222;
+}
+
+/* Headings */
+h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: 2.8rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Toggle Links */
+a {
+  text-decoration: none;
+  font-weight: bold;
+  margin-right: 10px;
+  color: #0d4c4c;
+}
+
+a:hover {
+  color: #ff6f61;
+}
+
+/* Listing Grid */
+ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+/* Listing Card */
+.listing-block {
+  width: 300px;
+  background: linear-gradient(to bottom right, #e0f8f4, #b4e6dd);
+  border: 2px dashed #666;
+  border-radius: 12px;
+  box-shadow: 2px 4px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  position: relative;
+  text-align: left;
+  font-size: 0.95rem;
+  transition: transform 0.2s;
+}
+
+.listing-block:hover {
+  transform: scale(1.03);
+}
+
+/* Listing Image */
+.listing-block img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #999;
+}
+
+/* Tags + Badges */
+.listing-tag, .listing-type, .listing-condition {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.listing-tag {
+  background: #62bdb3;
+  color: white;
+}
+
+.listing-type {
+  background: #7ccfc0;
+  color: black;
+}
+
+.listing-condition {
+  color: white;
+}
+
+.condition-new {
+  background: green;
+}
+.condition-used {
+  background: orange;
+}
+.condition-damaged {
+  background: red;
+}
+.condition-unknown {
+  background: gray;
+}
+
+/* Propose Trade Button */
+.propose-btn {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #ffe36e;
+  border: 2px solid #222;
+  font-family: 'Anton', sans-serif;
+  color: #000;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.propose-btn:hover {
+  background: #ffcc00;
+}
+
+/* Distance, Location, User */
+.extra-info {
+  font-size: 0.85rem;
+  color: #444;
+}

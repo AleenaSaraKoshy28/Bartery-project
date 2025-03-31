@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Libre+Baskerville&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #e0f8f4, #b4e6dd);
+  font-family: 'Libre Baskerville', serif;
+  color: #222;
+}
+
+.business-listing-container {
+  max-width: 850px;
+  margin: 60px auto;
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+.listing-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 2rem;
+  color: #0d4c4c;
+  margin-bottom: 30px;
+}
+
+.listing-img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.listing-img.placeholder {
+  background: #f5f5f5;
+  color: #999;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 100px 0;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.listing-info p {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.skill-section,
+.item-section {
+  background: #eafcf8;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 30px;
+}
+
+.skill-section h3,
+.item-section h3 {
+  font-size: 1.3rem;
+  font-family: 'Anton', sans-serif;
+  color: #0d4c4c;
+  margin-bottom: 15px;
+}
+
+.exchange-btn {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 10px 18px;
+  background-color: #0d4c4c;
+  color: white;
+  font-family: 'Anton', sans-serif;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.exchange-btn:hover {
+  background-color: #62bdb3;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 30px;
+  color: #0d4c4c;
+  text-decoration: underline;
+  font-size: 0.95rem;
+}

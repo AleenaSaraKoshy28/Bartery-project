@@ -1,0 +1,68 @@
+<!-- add_listing.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Listing</title>
+
+  <link rel="stylesheet" href="{% static 'user_functionality.css' %}">
+
+  <!-- Google Maps for location autocomplete -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1XzKBXkY9ett5wSIZA2wIZ9sCaelOm_w&libraries=places"></script>
+</head>
+
+<body>
+  <div class="page-container">
+    <h1>Add a New Listing or Skill</h1>
+
+    <!-- Display Django messages -->
+    {% if messages %}
+      <ul>
+        {% for msg in messages %}
+          <li style="color:red;">{{ msg }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <label for="listing-autocomplete">Location</label>
+      <input 
+        id="listing-autocomplete" 
+        type="text" 
+        name="location" 
+        placeholder="Enter listing location"
+      >
+      <input type="hidden" id="listing-autocomplete-latitude" name="latitude">
+      <input type="hidden" id="listing-autocomplete-longitude" name="longitude">
+
+      <button type="submit">Add Listing</button>
+    </form>
+
+    <p><a href="{% url 'dashboard' %}">← Back to Dashboard</a></p>
+  </div>
+
+  <script>
+    function initAutocomplete(inputId) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        const autocomplete = new google.maps.places.Autocomplete(input, { types: ['geocode'] });
+        autocomplete.addListener('place_changed', () => {
+          const place = autocomplete.getPlace();
+          if (place.geometry) {
+            document.getElementById(`${inputId}-latitude`).value = place.geometry.location.lat();
+            document.getElementById(`${inputId}-longitude`).value = place.geometry.location.lng();
+          }
+        });
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      initAutocomplete('listing-autocomplete');
+    });
+  </script>
+</body>
+</html>

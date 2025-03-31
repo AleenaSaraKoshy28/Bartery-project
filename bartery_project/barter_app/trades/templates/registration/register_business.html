@@ -1,0 +1,42 @@
+<!-- templates/registration/register_business.html -->
+
+<div id="business-modal" class="modal-overlay">
+    <div class="modal-card">
+      <h2 class="modal-title">🏢 Register Your Business</h2>
+  
+      <form method="post" action="{% url 'register_business' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+  
+        <input id="business-autocomplete" type="text" name="location" placeholder="Enter your location">
+        <input type="hidden" id="autocomplete-latitude" name="latitude">
+        <input type="hidden" id="autocomplete-longitude" name="longitude">
+  
+        <button type="submit" class="modal-btn">Register Business</button>
+      </form>
+  
+      <button class="close-btn" onclick="closeModal('business-modal')">✖</button>
+    </div>
+  </div>
+  
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1XzKBXkY9ett5wSIZA2wIZ9sCaelOm_w&libraries=places"></script>
+  <script>
+    function initAutocomplete(inputId) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        const autocomplete = new google.maps.places.Autocomplete(input, { types: ['geocode'] });
+        autocomplete.addListener('place_changed', () => {
+          const place = autocomplete.getPlace();
+          if (place.geometry) {
+            document.getElementById(`${inputId}-latitude`).value = place.geometry.location.lat();
+            document.getElementById(`${inputId}-longitude`).value = place.geometry.location.lng();
+          }
+        });
+      }
+    }
+  
+    document.addEventListener("DOMContentLoaded", function () {
+      initAutocomplete('business-autocomplete');
+    });
+  </script>
+  

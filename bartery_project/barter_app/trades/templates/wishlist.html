@@ -1,0 +1,9 @@
+<h1>Your Wishlist</h1>
+<ul>
+    {% for entry in wishlist_entries %}
+        <li>{{ entry.listing.title }} - {{ entry.listing.description }}
+        (<a href="{% url 'toggle_wishlist' entry.listing.id %}">Remove</a>)</li>
+    {% empty %}
+        <li>Your wishlist is empty.</li>
+    {% endfor %}
+</ul>
