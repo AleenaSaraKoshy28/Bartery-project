@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-!wc%96_42$nz*^dk(%#qzww4+@2z$x7t=a26=hf!$3*-n_t8r1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+   "bartery-project.onrender.com",
+]
 
 
 # Application definition
